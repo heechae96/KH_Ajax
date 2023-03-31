@@ -43,4 +43,16 @@ public class BoardServiceImpl implements BoardService{
 		return rList;
 	}
 
+	@Override
+	public int updateReply(Reply reply) {
+		int result = bStore.updateReply(reply);
+		return result;
+	}
+
+	@Override
+	public int deleteReply(int replyNo) {
+		int result = bStore.deleteReply(replyNo);
+		return result;
+	}
+
 }

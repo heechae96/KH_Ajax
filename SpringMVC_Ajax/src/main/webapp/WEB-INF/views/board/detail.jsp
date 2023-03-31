@@ -52,11 +52,19 @@
 		</tr>
 	</table>
 	<!-- 	댓글 목록 -->
-	<table align="center" width="500" border="1" id="replyTable">
+	<table class="table table-hover" style="text-align: center"
+		id="replyTable">
 		<thead>
 			<tr>
+				<th>작성자</th>
+				<th>댓글</th>
+				<th>날짜</th>
+				<th>수정</th>
+				<th>삭제</th>
+			</tr>
+			<tr>
 				<!-- 					댓글갯수 -->
-				<td colspan="4"><b id="replyCount"></b></td>
+				<td colspan="5"><b id="replyCount"></b></td>
 			</tr>
 		</thead>
 		<tbody>
@@ -74,31 +82,101 @@
 				},
 				type : "GET",
 				success : function(data) {
+					$("#replyCount").html('댓글 (' + data.length + ')');
 					const tableBody = $("#replyTable tbody");
+					/* 의도가 뭘까...? */
+					tableBody.html("");
 					let tr;
 					let rWriter;
 					let rContent;
 					let rCreateDate;
 					let btnArea;
-					if(data.length > 0){
-						for(let i in data){
+					if (data.length > 0) {
+						for ( let i in data) {
 							tr = $("<tr>");
 							rWriter = $("<td>").text(data[i].replyWriter);
 							rContent = $("<td>").text(data[i].replyContents);
 							rCreateDate = $("<td>").text(data[i].rCreateDate);
+							btnArea1 = $("<td>").append(
+									'<a href="javascript:void(0)" onclick = "modifyReply(this, \''
+											+ data[i].replyContents + '\', '
+											+ data[i].replyNo + ')">선택</a>')
+							btnArea2 = $("<td>").append(
+									'<a href="javascript:void(0)" onclick = "deleteReply('
+											+ data[i].replyNo + ')">선택</a>');
 							tr.append(rWriter);
 							tr.append(rContent);
 							tr.append(rCreateDate);
+							tr.append(btnArea1);
+							tr.append(btnArea2);
 							tableBody.append(tr);
 						}
 					}
-					
+
 				},
 				error : function() {
-					alert("ajax처리 실패..");
+					alert("ajax처리 실패");
 				}
 			});
 		}
+
+		function modifyReply(obj, replyContents, replyNo) {
+			let trModify = $("<tr>");
+			trModify
+					.append("<td colspan='4'><input type='text' id='modifyContent' value='"+replyContents+"'></td>");
+			trModify.append("<td><button onclick='modifyReplyContents("
+					+ replyNo + ")'>수정 완료</button></td>");
+			$(obj).parent().parent().after(trModify);
+			/* console.log($(obj).parent().parent());
+			console.log($(obj).parent());
+			console.log(obj); */
+		}
+
+		function modifyReplyContents(replyNo) {
+			const modifiedContent = $("#modifyContent").val();
+			$.ajax({
+				url : "/board/reply/modify",
+				data : {
+					"replyContents" : modifiedContent,
+					"replyNo" : replyNo
+				},
+				type : "POST",
+				success : function(result) {
+					if (result == '1') {
+						alert("댓글 수정 성공");
+						getReplyList();
+					} else {
+						alert("댓글 수정 실패[로그 확인 필요]");
+					}
+				},
+				error : function() {
+					alert("ajax처리 실패");
+				}
+			})
+		};
+
+		function deleteReply(replyNo) {
+			if (confirm("정말로 삭제하시겠습니까?")) {
+				$.ajax({
+					url : "/board/reply/delete",
+					data : {
+						"replyNo" : replyNo
+					},
+					type : "GET",
+					success : function(result) {
+						if (result == '1') {
+							alert("댓글 삭제 성공");
+							getReplyList();
+						} else {
+							alert("댓글 삭제 실패[로그 확인 필요]");
+						}
+					},
+					error : function() {
+						alert("ajax처리 실패");
+					}
+				})
+			}
+		};
 
 		$("#rSubmit").on("click", function() {
 			const boardNo = "${board.boardNo }"

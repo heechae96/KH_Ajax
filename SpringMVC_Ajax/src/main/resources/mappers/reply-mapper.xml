@@ -19,4 +19,12 @@
 		SELECT * FROM REPLY_TBL WHERE REF_BOARD_NO = #{boardNo}
 	</select>
 	
+	<update id="updateReply">
+		UPDATE REPLY_TBL SET REPLY_CONTENTS = #{replyContents} WHERE REPLY_NO = #{replyNo}
+	</update>
+	
+	<delete id="deleteReply">
+		DELETE FROM REPLY_TBL WHERE REPLY_NO = #{replyNo}
+	</delete>
+	
 </mapper>

@@ -15,7 +15,7 @@
 </head>
 <body>
 	<h1 style="text-align: center">게시글 등록 페이지</h1>
-	<form action="/board/register" method="post">
+	<form action="/board/register" method="post" enctype="multipart/form-data">
 		<table class="table table-hover" style="text-align: center">
 			<tr>
 				<td>제목</td>
@@ -31,7 +31,7 @@
 			</tr>
 			<tr>
 				<td>첨부파일</td>
-				<td><input type="file" name="boardFilename"></td>
+				<td><input type="file" name="uploadFile"></td>
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit" value="등록"> <input

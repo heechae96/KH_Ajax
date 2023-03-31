@@ -44,4 +44,16 @@ public class BoardStoreImpl implements BoardStore{
 		return rList;
 	}
 
+	@Override
+	public int updateReply(Reply reply) {
+		int result = session.update("replyMapper.updateReply", reply);
+		return result;
+	}
+
+	@Override
+	public int deleteReply(int replyNo) {
+		int result = session.delete("replyMapper.deleteReply", replyNo);
+		return result;
+	}
+
 }

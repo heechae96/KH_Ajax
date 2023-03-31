@@ -16,4 +16,8 @@ public interface BoardStore {
 
 	List<Reply> selectAllReply(int boardNo);
 
+	int updateReply(Reply reply);
+
+	int deleteReply(int replyNo);
+
 }

@@ -1,20 +1,27 @@
 package com.kh.board;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.ajax.Alert;
 import com.kh.ajax.domain.Reply;
+import com.kh.common.file.FileUtil;
 
 @Controller
 @RequestMapping("/board")
@@ -22,6 +29,10 @@ public class BoardController {
 
 	@Autowired
 	private BoardService bService;
+	
+	@Autowired				// 의존성 주입
+	@Qualifier("fileUtil")	// 빈으로 등록
+	private FileUtil fileUtil;
 
 	@GetMapping("/register")
 	public ModelAndView register(ModelAndView mv) {
@@ -30,8 +41,14 @@ public class BoardController {
 	}
 
 	@PostMapping("/register")
-	public ModelAndView register(ModelAndView mv, @ModelAttribute Board board) {
+	public ModelAndView register(ModelAndView mv, @ModelAttribute Board board,
+			@RequestParam(name = "uploadFile", required = false) MultipartFile multipartFile, HttpServletRequest req) {
+		Map<String, String> fileInfo = null;
 		try {
+			fileInfo = fileUtil.saveFile(multipartFile, req);
+			board.setBoardFilename(fileInfo.get("original"));
+			board.setBoardFileRename(fileInfo.get("rename"));
+			board.setBoardFilepath(fileInfo.get("renameFilePath"));
 			int result = bService.insertBoard(board);
 			if (result > 0) {
 				mv.setViewName("redirect:/board/list");
@@ -101,10 +118,40 @@ public class BoardController {
 	}
 
 	@ResponseBody
-	@GetMapping(value="/reply/list", produces = "application/json; charset=UTF-8")
+	@GetMapping(value = "/reply/list", produces = "application/json; charset=UTF-8")
 	public String viewReplyList(int boardNo) {
 		List<Reply> rList = bService.selectAllReply(boardNo);
 		return new Gson().toJson(rList);
+	}
+
+	@ResponseBody
+	@PostMapping(value = "/reply/modify", produces = "application/json; charset=UTF-8")
+	public String doReplyUpdate(@ModelAttribute Reply reply) {
+		try {
+			int result = bService.updateReply(reply);
+			if (result > 0) {
+				return "1";
+			} else {
+				return "0";
+			}
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	@ResponseBody
+	@GetMapping(value = "/reply/delete", produces = "application/json; charset=UTF-8")
+	public String doReplyDelete(int replyNo) {
+		try {
+			int result = bService.deleteReply(replyNo);
+			if (result > 0) {
+				return "1";
+			} else {
+				return "0";
+			}
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 
 }
