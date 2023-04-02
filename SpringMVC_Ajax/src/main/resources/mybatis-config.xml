@@ -6,6 +6,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="com.kh.board.Board" alias="Board" />
+		<typeAlias type="com.kh.photo.Photo" alias="Photo" />
 		<typeAlias type="com.kh.ajax.domain.Reply" alias="Reply" />
 	</typeAliases>
 </configuration>
