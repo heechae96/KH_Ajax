@@ -27,7 +27,7 @@ public class PhotoController {
 
 	@Autowired
 	private PhotoService pService;
-	
+
 	@Autowired
 	@Qualifier("fileUtil")
 	private FileUtil fileUtil;
@@ -54,7 +54,7 @@ public class PhotoController {
 				mv.addObject("alert", alert);
 				mv.setViewName("common/alert");
 			} else {
-				Alert alert = new Alert("/photo/insert", "사진 등록 실패");
+				Alert alert = new Alert("/photo/list", "사진 등록 실패");
 				mv.addObject("alert", alert);
 				mv.setViewName("common/alert");
 			}
@@ -62,22 +62,21 @@ public class PhotoController {
 			e.printStackTrace();
 			mv.addObject("msg", e.getMessage()).setViewName("common/error");
 		}
+		mv.setViewName("redirect:/photo/list");
 		return mv;
 	}
-	
+
 	@GetMapping("/list")
 	public ModelAndView viewPhotoList(ModelAndView mv) {
 		mv.setViewName("photo/list");
 		return mv;
 	}
-	
+
 	@ResponseBody
-	@PostMapping(value="/more", produces = "application/json; charset=utf-8")
+	@PostMapping(value = "/more", produces = "application/json; charset=utf-8")
 	public String viewPhotoList(int start) {
 		List<Photo> pList = pService.morePhoto(start);
-		if(!pList.isEmpty()) {
-			return new Gson().toJson(pList);
-		}
-		return null;
+		return new Gson().toJson(pList);
 	}
+
 }

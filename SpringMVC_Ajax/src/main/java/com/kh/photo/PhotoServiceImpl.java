@@ -13,6 +13,7 @@ public class PhotoServiceImpl implements PhotoService{
 
 	@Override
 	public int insertPhoto(Photo photo) {
+		pStore.insertPhoto(photo);
 		int result = pStore.insertPhoto(photo);
 		return result;
 	}

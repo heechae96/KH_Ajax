@@ -21,7 +21,7 @@ public class PhotoStoreImpl implements PhotoStore{
 
 	@Override
 	public List<Photo> morePhoto(int start) {
-		int limit = 5;
+		int limit = 3;
 		int offset = (start - 1) * limit;
 		RowBounds rowbounds = new RowBounds(offset, limit);
 		List<Photo> pList = session.selectList("photoMapper.morePhoto", null, rowbounds);
