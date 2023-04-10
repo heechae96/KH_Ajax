@@ -6,6 +6,8 @@ public interface PhotoStore {
 
 	int insertPhoto(Photo photo);
 
+	int updatePhoto(Photo photo);
+	
 	List<Photo> morePhoto(int start);
 
 }

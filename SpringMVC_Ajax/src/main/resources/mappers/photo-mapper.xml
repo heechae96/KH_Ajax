@@ -20,4 +20,10 @@
 		SELECT * FROM PHOTO_TBL
 	</select>
 	
+	<update id="updatePhoto">
+		UPDATE PHOTO_TBL
+		SET PHOTO_WRITER = #{photoWriter}, PHOTO_CONTENT = #{photoContent}, PHOTO_FILENAME = #{photoFilename}, PHOTO_FILERENAME = #{photoFileRename}, PHOTO_FILEPATH = #{photoFilepath}
+		WHERE PHOTO_NO = #{photoNo}
+	</update>
+	
 </mapper>

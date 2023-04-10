@@ -13,8 +13,13 @@ public class PhotoServiceImpl implements PhotoService{
 
 	@Override
 	public int insertPhoto(Photo photo) {
-		pStore.insertPhoto(photo);
 		int result = pStore.insertPhoto(photo);
+		return result;
+	}
+	
+	@Override
+	public int updatePhoto(Photo photo) {
+		int result = pStore.updatePhoto(photo);
 		return result;
 	}
 
@@ -23,4 +28,5 @@ public class PhotoServiceImpl implements PhotoService{
 		List<Photo> pList = pStore.morePhoto(start);
 		return pList;
 	}
+
 }

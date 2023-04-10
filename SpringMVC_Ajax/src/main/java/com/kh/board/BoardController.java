@@ -44,10 +44,10 @@ public class BoardController {
 			@RequestParam(name = "uploadFile", required = false) MultipartFile multipartFile, HttpServletRequest req) {
 		Map<String, String> fileInfo = null;
 		try {
-			fileInfo = fileUtil.saveFile(multipartFile, req);
-			board.setBoardFilename(fileInfo.get("original"));
-			board.setBoardFileRename(fileInfo.get("rename"));
-			board.setBoardFilepath(fileInfo.get("renameFilePath"));
+//			fileInfo = fileUtil.saveFile(multipartFile, req);
+//			board.setBoardFilename(fileInfo.get("original"));
+//			board.setBoardFileRename(fileInfo.get("rename"));
+//			board.setBoardFilepath(fileInfo.get("renameFilePath"));
 			int result = bService.insertBoard(board);
 			if (result > 0) {
 				mv.setViewName("redirect:/board/list");

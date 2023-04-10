@@ -20,6 +20,12 @@ public class PhotoStoreImpl implements PhotoStore{
 	}
 
 	@Override
+	public int updatePhoto(Photo photo) {
+		int result = session.insert("photoMapper.updatePhoto", photo);
+		return result;
+	}
+	
+	@Override
 	public List<Photo> morePhoto(int start) {
 		int limit = 3;
 		int offset = (start - 1) * limit;
@@ -27,4 +33,5 @@ public class PhotoStoreImpl implements PhotoStore{
 		List<Photo> pList = session.selectList("photoMapper.morePhoto", null, rowbounds);
 		return pList;
 	}
+
 }
