@@ -44,10 +44,10 @@ public class PhotoController {
 			@ModelAttribute Photo photo) {
 		Map<String, String> fileInfo = null;
 		try {
-			fileInfo = fileUtil.saveFile(mp, req);
-			photo.setPhotoFilename(fileInfo.get("original"));
-			photo.setPhotoFileRename(fileInfo.get("rename"));
-			photo.setPhotoFilepath(fileInfo.get("renameFilePath"));
+//			fileInfo = fileUtil.saveFile(mp, req);
+//			photo.setPhotoFilename(fileInfo.get("original"));
+//			photo.setPhotoFileRename(fileInfo.get("rename"));
+//			photo.setPhotoFilepath(fileInfo.get("renameFilePath"));
 			int result = pService.insertPhoto(photo);
 			if (result > 0) {
 				Alert alert = new Alert("/photo/list", "사진 등록 성공");
@@ -62,7 +62,7 @@ public class PhotoController {
 			e.printStackTrace();
 			mv.addObject("msg", e.getMessage()).setViewName("common/error");
 		}
-		mv.setViewName("redirect:/photo/list");
+//		mv.setViewName("redirect:/photo/list");
 		return mv;
 	}
 
